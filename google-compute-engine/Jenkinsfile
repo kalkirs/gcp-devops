@@ -8,7 +8,7 @@ pipeline {
     stages {
               stage ('checkout'){
             steps {
-                git branch: 'master', url: 'https://github.com/ishaqmdgcp/faheem.git'
+                git branch: 'main', url: 'https://github.com/kalkirs/gcp-devops.git'
             }
         }
 		stage('Set creds') {
@@ -26,7 +26,7 @@ pipeline {
 	 steps {
 		 dir('google-compute-engine')
     
-        sh 'gcloud auth activate-service-account jenkins@mi-dev-lab.iam.gserviceaccount.com --key-file=jenkins.json'
+        sh 'gcloud auth activate-service-account jenkins@murthylab.iam.gserviceaccount.com --key-file=jenkins.json'
     }
     }
  	 
@@ -37,25 +37,5 @@ pipeline {
         
     }
     }
-    
-    	stage('Collect External IP') {
-	 steps {
-    
-         sh "gcloud compute instances describe webhost3 --zone=us-central1-a --format='get(networkInterfaces[0].accessConfigs[0].natIP)' > ip.txt"
-	     sh 'cat ip.txt'
-        
-    }
-    }
-    
-    
-  
-    stage('App health check') {
-	 steps {
-
-	    sh 'curl http://$(cat ip.txt)'
-    
-    }
-    }
-   }
 }
 }
