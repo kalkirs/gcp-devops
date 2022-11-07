@@ -26,7 +26,7 @@ pipeline {
 	 steps {
 		 dir('google-compute-engine')
     
-        sh 'gcloud auth activate-service-account jenkins@murthylab.iam.gserviceaccount.com --key-file=jenkins.json'
+        sh 'gcloud auth activate-service-account jenkins@murthylab.iam.gserviceaccount.com --key-file=./google-compute-engine/jenkins.json'
     }
     }
  	 
