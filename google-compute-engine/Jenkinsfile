@@ -36,7 +36,7 @@ pipeline {
 	stage('Create Instance') {
 	 steps {
     
-    sh 'gcloud compute instances create pipeline-kalki1 --zone=us-central1-a --machine-type=n1-standard-1 --tags=http-server --create-disk=auto-delete=yes,boot=yes,device-name=commandline-kalki,image=projects/ubuntu-os-cloud/global/images/ubuntu-1804-bionic-v20221018,mode=rw,size=10,type=projects/murthylab/zones/europe-west2-a/diskTypes/pd-balanced --metadata=gs://kalki-bucket/startup_script.sh'
+    sh 'gcloud compute instances create pipeline-kalki1 --zone=us-central1-a --machine-type=n1-standard-1 --tags=http-server --create-disk=auto-delete=yes,boot=yes,device-name=commandline-kalki,image=projects/ubuntu-os-cloud/global/images/ubuntu-1804-bionic-v20221018,mode=rw,size=10,type=projects/murthylab/zones/europe-west2-a/diskTypes/pd-balanced --metadata-from-file=startup-script=gs://kalki-bucket/startup_script.sh'
         
     }
     }
