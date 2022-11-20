@@ -1,5 +1,8 @@
- #! /bin/bash
- apt update
- apt -y install apache2
- cat <<EOF > /var/www/html/index.html
- <html><body><p>Welcome to MI Institute...!</p></body></html>
+apt-get update
+apt-get install -y git
+apt-get install -y openjdk-*
+export JAVA_HOME=/usr
+git clone https://github.com/spring-projects/spring-petclinic.git
+cd spring-petclinic
+./mvnw package
+java -jar target/*.jar
