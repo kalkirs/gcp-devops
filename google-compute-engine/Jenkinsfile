@@ -39,7 +39,6 @@ pipeline {
     sh 'gcloud compute instance-templates create spring-template --metadata-from-file=startup-script=./google-compute-engine/startup-script.sh'
 	sh'gcloud compute target-pools create spring-pool --region us-central1'
 	sh'gcloud compute instance-groups managed create spring-group --base-instance-name spring --size 2 --template spring-template --target-pool spring-pool --region us-central1'
-	sh'gcloud compute firewall-rules create allow-fw-http --allow tcp:8080'
         sh'gcloud compute instance-groups managed set-autoscaling spring-group --project=murthylab --region=us-central1 --cool-down-period=90 --max-num-replicas=4 --min-num-replicas=2 --mode=on --target-cpu-utilization=0.6'
 	sh'gcloud compute forwarding-rules create spring-lb --region us-central1 --ports=8080 --target-pool spring-pool'
         
