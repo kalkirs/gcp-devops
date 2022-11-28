@@ -49,7 +49,7 @@ pipeline {
     
     stage('App Deploy') {
 	 steps {
-	 dir('gcp-devops')
+	 dir('google-compute-engine')
 			 {
         /* Below command specifies exactly like the command line */
     
