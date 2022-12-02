@@ -30,9 +30,8 @@ pipeline {
 	sh 'pwd'
         sh 'gcloud auth activate-service-account jenkins@murthylab.iam.gserviceaccount.com --key-file=jenkins.json'
 	sh 'gcloud auth configure-docker'
-	 sh 'sudo su docker pull ishaqmd/petclinic'
-	 sh 'sudo su docker tag ishaqmd/petclinic:latest gcr.io/murthylab/petclinic:v1'
-	 sh 'sudo su docker push gcr.io/murthylab/petclinic:v1'
+	 sh 'docker tag kalki5599/petclinic:latest gcr.io/murthylab/petclinic:v1'
+	 sh 'docker push gcr.io/murthylab/petclinic:v1'
     }
     }
 	}
