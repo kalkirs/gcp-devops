@@ -1,0 +1,54 @@
+pipeline {
+    agent any
+
+    environment {
+    SVC_ACCOUNT_KEY = credentials('terraform-auth')
+  }
+     
+    stages {
+              stage ('checkout'){
+            steps {
+                git branch: 'main', url: 'https://github.com/kalkirs/gcp-devops.git'
+            }
+        }
+		stage('Set creds') {
+            steps {
+              
+                sh 'echo $SVC_ACCOUNT_KEY | base64 -d > ./google-compute-engine/jenkins.json'
+		            sh 'pwd'
+		    sh 'cd google-compute-engine'
+                       
+               
+            }
+        }
+	
+	stage('Auth-Project') {
+	 steps {
+		 dir('google-compute-engine')
+	{
+        sh 'ls -ltr'
+	sh 'pwd'
+        sh 'gcloud auth activate-service-account jenkins@murthylab.iam.gserviceaccount.com --key-file=jenkins.json'
+	sh 'gcloud auth configure-docker'
+    }
+    }
+	}
+ 	 
+	stage('delete GKE cluster') {
+	 steps {
+    
+        sh 'gcloud container clusters delete gke-cluster --zone europe-central2-a --num-nodes=1 --project murthylab'
+    }
+    }
+        
+   }
+   post{
+        failure{
+            emailext to: "kirankolla46@gmail.com",
+            subject: "jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}",
+            body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}",
+            attachLog: true
+        }
+    }
+       
+   }
