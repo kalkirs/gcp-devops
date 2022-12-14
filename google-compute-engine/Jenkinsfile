@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-    SVC_ACCOUNT_KEY = credentials('terraform-auth')
+    SVC_ACCOUNT_KEY = credentials('jenkins-auth')
   }
      
     stages {
@@ -28,19 +28,16 @@ pipeline {
 	{
         sh 'ls -ltr'
 	sh 'pwd'
-        sh 'gcloud auth activate-service-account jenkins@murthylab.iam.gserviceaccount.com --key-file=jenkins.json'
-	sh 'gcloud auth configure-docker'
-	 sh 'docker pull kalki5599/petclinic:latest'
-	 sh 'docker tag kalki5599/petclinic:latest gcr.io/murthylab/petclinic:v1'
-	 sh 'docker push gcr.io/murthylab/petclinic:v1'
+        sh 'gcloud auth activate-service-account jenkins@murthyuat.iam.gserviceaccount.com --key-file=jenkins.json'
+	
     }
     }
 	}
  	 
-	stage('Create GKE cluster') {
+	stage('Create vm instance') {
 	 steps {
     
-        sh 'gcloud container clusters create gke-cluster --zone europe-central2-a --num-nodes=1 --project murthylab'
+        sh 'gcloud compute instances create kalkivm --zone=us-central1-a'
     }
     }
     
@@ -51,24 +48,5 @@ pipeline {
     }
     }
     
-    stage('App Deploy') {
-	 steps {
-	 dir('google-compute-engine')
-			 {
-        /* Below command specifies exactly like the command line */
-    
-        sh 'kubectl apply -f deployment.yaml'
-	sh 'sleep 60s'
-	
-    }
-    }
-    }
-    
-    stage('App health check') {
-	 steps {
-    
-        sh 'curl http://34.116.220.90:8080'        
-    }
-    }
 }
 }
