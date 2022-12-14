@@ -41,12 +41,5 @@ pipeline {
     }
     }
     
-    stage('Get creds from GKE cluster') {
-	 steps {
-    
-        sh 'gcloud container clusters get-credentials gke-cluster --zone europe-central2-a --project murthylab'
-    }
-    }
-    
 }
 }
